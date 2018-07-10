@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace crasher.Model
 {
-    public abstact class AttackStats
+    public abstract class AttackStats
     {
         public bool Started { get; set; } = false;
         public int RequestSent { get; set; } = 0;
