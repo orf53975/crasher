@@ -27,7 +27,7 @@ namespace crasher.Attacks
             }
             else
             {
-                stopFlag = true;
+                stopFlag = false;
                 StartAttack();
             }
 
@@ -53,12 +53,11 @@ namespace crasher.Attacks
         {
             while (true)
             {
-                client.DownloadString(AttackSettings.Url);
-
                 if (stopFlag)
                 {
                     break;
                 }
+                client.DownloadString(AttackSettings.Url);
             }
         }
 
