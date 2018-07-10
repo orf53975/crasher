@@ -44,6 +44,11 @@
   <ItemGroup>
     <Compile Include="Attacks\ClientRequest.cs" />
     <Compile Include="Attacks\Mirror.cs" />
+    <Compile Include="Helpers\InputHelpers\Asker.cs" />
+    <Compile Include="Helpers\InputHelpers\AnswerType.cs" />
+    <Compile Include="Helpers\Validators\IntegerValidator.cs" />
+    <Compile Include="Helpers\Validators\StringValidator.cs" />
+    <Compile Include="Helpers\Validators\Validator.cs" />
     <Compile Include="Model\Attack.cs" />
     <Compile Include="Model\AttackSettings.cs" />
     <Compile Include="Model\AttackStats.cs" />
@@ -53,6 +58,10 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="todo.txt" />
+    <Content Include="_testing\http_server.js" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
