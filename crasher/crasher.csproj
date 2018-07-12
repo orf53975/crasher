@@ -51,6 +51,7 @@
     <Compile Include="Helpers\Validators\StringValidator.cs" />
     <Compile Include="Helpers\Validators\Validator.cs" />
     <Compile Include="Model\Attack.cs" />
+    <Compile Include="Model\AttackProxy.cs" />
     <Compile Include="Model\AttackSettings.cs" />
     <Compile Include="Model\AttackStats.cs" />
     <Compile Include="Model\AttackType.cs" />
