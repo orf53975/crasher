@@ -46,6 +46,7 @@
     <Compile Include="Attacks\Mirror.cs" />
     <Compile Include="Helpers\InputHelpers\Asker.cs" />
     <Compile Include="Helpers\InputHelpers\AnswerType.cs" />
+    <Compile Include="Helpers\NetHelper.cs" />
     <Compile Include="Helpers\Validators\IntegerValidator.cs" />
     <Compile Include="Helpers\Validators\StringValidator.cs" />
     <Compile Include="Helpers\Validators\Validator.cs" />

@@ -12,5 +12,6 @@ namespace crasher.Model
         public static AttackType Mode { get; set; } = AttackType.ClientRequest;
         public static bool Threading { get; set; } = false;
         public static int Threads { get; set; } = 10;
+        public static int PacketSize { get; set; } = 2048;
     }
 }

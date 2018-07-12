@@ -16,7 +16,7 @@ namespace crasher
             int type;
             Console.WriteLine("Ultimate DDoS Tool by Luca Di Bello");
 
-
+            
             while (true)
             {
                 Console.Write("Victim URL: ");

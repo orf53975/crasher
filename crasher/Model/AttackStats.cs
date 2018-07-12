@@ -8,8 +8,8 @@ namespace crasher.Model
 {
     public abstract class AttackStats
     {
-        public bool Started { get; set; } = false;
-        public int RequestSent { get; set; } = 0;
-        public int RequestDone { get; set; } = 0;
+        public static bool Started { get; set; } = false;
+        public static int RequestSent { get; set; } = 0;
+        public static int RequestDone { get; set; } = 0;
     }
 }
