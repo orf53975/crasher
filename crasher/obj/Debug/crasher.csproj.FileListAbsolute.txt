@@ -12,3 +12,9 @@ C:\Users\luca6\OneDrive\Documenti\Repo\crasher\crasher\bin\Debug\crasher.exe.con
 C:\Users\luca6\OneDrive\Documenti\Repo\crasher\crasher\bin\Debug\crasher.exe
 C:\Users\luca6\OneDrive\Documenti\Repo\crasher\crasher\bin\Debug\crasher.pdb
 C:\Users\luca6\OneDrive\Documenti\Repo\crasher\crasher\obj\Debug\crasher.csprojAssemblyReference.cache
+C:\Users\luca6\OneDrive\Documenti\Repo\crasher\crasher\bin\Debug\Newtonsoft.Json.dll
+C:\Users\luca6\OneDrive\Documenti\Repo\crasher\crasher\bin\Debug\Newtonsoft.Json.xml
+C:\Users\luca6\OneDrive\Documenti\Repo\crasher\crasher\obj\Debug\crasher.csproj.CopyComplete
+C:\Users\luca6\OneDrive\Documenti\Repo\crasher\crasher\obj\Debug\crasher.GUI.resources
+C:\Users\luca6\OneDrive\Documenti\Repo\crasher\crasher\obj\Debug\crasher.csproj.GenerateResource.cache
+C:\Users\luca6\OneDrive\Documenti\Repo\crasher\crasher\obj\Debug\crasher.Properties.Resources.resources

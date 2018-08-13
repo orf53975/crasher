@@ -9,7 +9,7 @@ namespace crasher.Model
     public abstract class AttackSettings
     {
         public static string Url { get; set; } = "none";
-        public static AttackType Mode { get; set; } = AttackType.ClientRequest;
+        public static AttackType Mode { get; set; } = AttackType.HttpFlood;
         public static bool Threading { get; set; } = false;
         public static int Threads { get; set; } = 10;
         public static int PacketSize { get; set; } = 2048;

@@ -32,8 +32,13 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Newtonsoft.Json, Version=11.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.11.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -42,10 +47,18 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Attacks\ClientRequest.cs" />
-    <Compile Include="Attacks\Mirror.cs" />
+    <Compile Include="Attacks\HttpFlood.cs" />
+    <Compile Include="Attacks\PodAttack.cs" />
+    <Compile Include="GUI.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="GUI.Designer.cs">
+      <DependentUpon>GUI.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Helpers\ClientHelper.cs" />
     <Compile Include="Helpers\InputHelpers\Asker.cs" />
     <Compile Include="Helpers\InputHelpers\AnswerType.cs" />
+    <Compile Include="Helpers\MREHelper.cs" />
     <Compile Include="Helpers\NetHelper.cs" />
     <Compile Include="Helpers\Validators\IntegerValidator.cs" />
     <Compile Include="Helpers\Validators\StringValidator.cs" />
@@ -55,15 +68,30 @@
     <Compile Include="Model\AttackSettings.cs" />
     <Compile Include="Model\AttackStats.cs" />
     <Compile Include="Model\AttackType.cs" />
+    <Compile Include="Model\ServerInfo.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+    <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="todo.txt" />
-    <Content Include="_testing\http_server.js" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="GUI.resx">
+      <DependentUpon>GUI.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

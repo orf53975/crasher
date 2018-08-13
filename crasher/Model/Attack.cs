@@ -22,10 +22,10 @@ namespace crasher.Model
          * **/
         public void Start()
         {
-            if (AttackSettings.Mode == AttackType.ClientRequest)
-                Attacks.ClientRequest.Start();
-            else if (AttackSettings.Mode == AttackType.Mirror)
-                Attacks.Mirror.Start();
+            if (AttackSettings.Mode == AttackType.HttpFlood)
+                Attacks.HttpFlood.Start();
+            else if (AttackSettings.Mode == AttackType.PodAttack)
+                Attacks.PodAttack.Start();
         }
 
         /**
@@ -33,10 +33,10 @@ namespace crasher.Model
          * **/
         public void Stop()
         {
-            if (AttackSettings.Mode == AttackType.ClientRequest)
-                Attacks.ClientRequest.Stop();
-            else if (AttackSettings.Mode == AttackType.Mirror)
-                Attacks.Mirror.Stop();
+            if (AttackSettings.Mode == AttackType.HttpFlood)
+                Attacks.HttpFlood.Stop();
+            else if (AttackSettings.Mode == AttackType.PodAttack)
+                Attacks.PodAttack.Stop();
         }
     }
 }

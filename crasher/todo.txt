@@ -1,6 +1,4 @@
 ﻿TODO:
 
--Proxys -> Internal proxy scraper
--Mirror attack using webserver
--Adding working botnet
--Adding node.js server for testing
++Lib for MRE Control
++Send data from PHP to C# App

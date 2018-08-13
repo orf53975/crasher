@@ -8,8 +8,8 @@ namespace crasher.Model
 {
     public enum AttackType
     {
-        Mirror = 0,
-        ClientRequest = 1,
-        Botnet = 2,
+        HttpFlood = 0,
+        PodAttack = 1,
+        SynFlood = 2
     }
 }
