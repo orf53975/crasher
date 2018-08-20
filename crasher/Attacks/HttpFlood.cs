@@ -10,7 +10,6 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using crasher.Model;
-using WebException = System.Net.WebException;
 
 namespace crasher.Attacks
 {
@@ -22,6 +21,7 @@ namespace crasher.Attacks
         private static bool stopFlag = false;
         private static Uri Url;
         private static bool ThreadsStarted = false;
+
         /**
          * Metodo che starta l'attacco, tipo di attacco a seconda del flag "threading" in AttackSettings.cs
          * **/
@@ -77,6 +77,9 @@ namespace crasher.Attacks
                     //WebResponse response = SendData(Url,packet,out requestStatus);
 
                     SendRequest(Url,out requestStatus);
+
+                    //TWO TYPES OF ATTACK: HTTP GET REQUEST or HTTP POST REQUEST (SendRequest() or SendData())
+
                     if (requestStatus)
                     {
                         Console.WriteLine("OK");
