@@ -44,6 +44,9 @@ namespace crasher
                 labelMREConnection.Text = "Failed";
                 labelMREConnection.ForeColor = Color.Red;
             }
+
+            labelTotalCannons.Text = MREHelper.GetTotUsers().ToString();
+            labelTotalCannons.ForeColor = Color.LightGreen;
         }
     }
 }

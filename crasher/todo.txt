@@ -1,4 +1,13 @@
 ﻿TODO:
 
-+Lib for MRE Control
-+Send data from PHP to C# App
++Account type
++Implement all attack-related classes
+
+
+
+-Lib for MRE Control
+-Send data from PHP to C# App
+
+----------------------------------
+- = Done
++ = To-Do

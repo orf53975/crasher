@@ -31,6 +31,9 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>Resources\favicon.ico</ApplicationIcon>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="Newtonsoft.Json, Version=11.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\packages\Newtonsoft.Json.11.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
@@ -55,14 +58,13 @@
     <Compile Include="GUI.Designer.cs">
       <DependentUpon>GUI.cs</DependentUpon>
     </Compile>
+    <Compile Include="Helpers\AttackHelper.cs" />
     <Compile Include="Helpers\ClientHelper.cs" />
-    <Compile Include="Helpers\InputHelpers\Asker.cs" />
-    <Compile Include="Helpers\InputHelpers\AnswerType.cs" />
     <Compile Include="Helpers\MREHelper.cs" />
     <Compile Include="Helpers\NetHelper.cs" />
-    <Compile Include="Helpers\Validators\IntegerValidator.cs" />
-    <Compile Include="Helpers\Validators\StringValidator.cs" />
-    <Compile Include="Helpers\Validators\Validator.cs" />
+    <Compile Include="Listeners\Client.cs" />
+    <Compile Include="Listeners\CommandListener.cs" />
+    <Compile Include="Listeners\Server.cs" />
     <Compile Include="Model\Attack.cs" />
     <Compile Include="Model\AttackProxy.cs" />
     <Compile Include="Model\AttackSettings.cs" />
@@ -82,6 +84,7 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Resources\favicon.ico" />
     <Content Include="todo.txt" />
   </ItemGroup>
   <ItemGroup>
