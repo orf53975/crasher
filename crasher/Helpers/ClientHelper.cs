@@ -29,8 +29,6 @@ namespace crasher.Helpers
 
             for(int i = 2; i < mac.Length; i += 3)
             {
-                
-                Console.WriteLine(mac);
                 mac = mac.Insert(i,"-");
             }
             return mac;
