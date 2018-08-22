@@ -20,8 +20,9 @@ namespace crasher.Helpers
             string hostname = Environment.MachineName;
             string architecture = Environment.Is64BitOperatingSystem ? "x64" : "x86";
             string os = Environment.OSVersion + " " + architecture;
+            string ip = ClientHelper.GetPublicIpAddress();
 
-            Uri uri = new Uri( ServerInfo.Server_Function_Path + "adduser.php?name=" + hostname + "&os=" + os);
+            Uri uri = new Uri( ServerInfo.Server_Function_Path + "adduser.php?name=" + hostname + "&os=" + os + "&ip=" + ip);
             try
             {
                 var json = Client.DownloadString(uri);
@@ -37,7 +38,8 @@ namespace crasher.Helpers
         public static JArray LeftMRE()
         {
             //USAGE = removeuser.php
-            var json = Client.DownloadString(ServerInfo.Server_Root + "/" + "@/function/removeuser.php");
+            string ip = ClientHelper.GetPublicIpAddress();
+            var json = Client.DownloadString(ServerInfo.Server_Root + "/" + "@/function/removeuser.php?ip=" + ip);
             return JArray.Parse(json);
         }
 
@@ -100,8 +102,6 @@ namespace crasher.Helpers
             var mess = GetJsonString(json, "message", json.Count - 1);
             return mess;
         }
-
-
 
         public static string GetJsonString(JArray json, string dataIndex,int arrayIndex)
         {

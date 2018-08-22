@@ -15,9 +15,11 @@ namespace crasher
 {
     class Program
     {
-        public static System.Timers.Timer timerCheck;
-        public static Thread guiThread;
-        public static Thread attackCheckThread;
+        public static System.Timers.Timer TimerCheck;
+        public static Thread GuiThread;
+        public static Thread AttackCheckThread;
+        public static GUI Gui;
+        public static bool GUiStarted;
 
         static void Main(string[] args)
         {
@@ -61,25 +63,35 @@ namespace crasher
             Console.WriteLine("[Info] Loading GUI application...");
             Console.ForegroundColor = ConsoleColor.White;
 
-            guiThread = new Thread(StartGUI);
-            guiThread.Start();
+            GuiThread = new Thread(StartGUI);
+            GuiThread.Start();
 
+            //WAIT UNTIL THE GUI IS COMPLETLY STARTED
+            while (true)
+            {
+                if (GUiStarted)
+                {
+                    break;
+                }
+                else
+                {
+                    Thread.Sleep(100);
+                }
+            }
             Console.ForegroundColor = ConsoleColor.Green;
             Console.WriteLine("[Success] GUI loaded correctly");
             Console.ForegroundColor = ConsoleColor.White;
-
-            //CHECK OGNI TOT SECONDI SE L'ACCOUNT È COINVOLTO IN ATTACCHI
-
+            
             //Timer for attack checking every x seconds
             Console.ForegroundColor = ConsoleColor.Cyan;
             Console.WriteLine("[Info] Contact server for attacks...");
             Console.ForegroundColor = ConsoleColor.White;
 
-            attackCheckThread = new Thread(CheckNewAttacks);
-            attackCheckThread.Start(30000);
+            AttackCheckThread = new Thread(CheckNewAttacks);
+            AttackCheckThread.Start(30000);
 
             //trigger first check
-            OnTimedEvent(timerCheck, null);
+            OnTimedEvent(TimerCheck, null);
         }
 
         /* JOIN MRE & CONNECTS TO TCP SERVER */
@@ -119,24 +131,25 @@ namespace crasher
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new GUI());
+            Gui = new GUI();
+            Application.Run(Gui);
         }
 
         public static void CheckNewAttacks(object interval)
         {
             // Create a timer with a two second interval.
-            timerCheck = new System.Timers.Timer(Convert.ToInt32(interval));
+            TimerCheck = new System.Timers.Timer(Convert.ToInt32(interval));
             // Hook up the Elapsed event for the timer. 
-            timerCheck.Elapsed += OnTimedEvent;
-            timerCheck.AutoReset = true;
-            timerCheck.Enabled = true;
+            TimerCheck.Elapsed += OnTimedEvent;
+            TimerCheck.AutoReset = true;
+            TimerCheck.Enabled = true;
         }
 
         private static void OnTimedEvent(Object source, ElapsedEventArgs e)
         {
-            ClientHelper.GetUserAttacks();
+            ClientHelper.ManageNewAttacks();
             Console.ForegroundColor = ConsoleColor.Cyan;
-            Console.WriteLine("[Info] Next check in {0} second(s)", timerCheck.Interval / 1000);
+            Console.WriteLine("[Info] Next check in {0} second(s)", TimerCheck.Interval / 1000);
             Console.ForegroundColor = ConsoleColor.White;
         }
     }

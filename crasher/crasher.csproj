@@ -60,6 +60,7 @@
     </Compile>
     <Compile Include="Helpers\AttackHelper.cs" />
     <Compile Include="Helpers\ClientHelper.cs" />
+    <Compile Include="Helpers\GUIHelper.cs" />
     <Compile Include="Helpers\MREHelper.cs" />
     <Compile Include="Helpers\NetHelper.cs" />
     <Compile Include="Listeners\Client.cs" />

@@ -33,6 +33,8 @@
             this.label2 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
             this.panelStatus = new System.Windows.Forms.Panel();
+            this.labelTotalCannons = new System.Windows.Forms.Label();
+            this.label9 = new System.Windows.Forms.Label();
             this.labelMacAdress = new System.Windows.Forms.Label();
             this.label11 = new System.Windows.Forms.Label();
             this.labelMachineName = new System.Windows.Forms.Label();
@@ -42,16 +44,19 @@
             this.label5 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
             this.panelMain = new System.Windows.Forms.Panel();
-            this.listView1 = new System.Windows.Forms.ListView();
+            this.checkBoxThreads = new System.Windows.Forms.CheckBox();
+            this.label4 = new System.Windows.Forms.Label();
+            this.trackBar1 = new System.Windows.Forms.TrackBar();
+            this.buttonStartAttack = new System.Windows.Forms.Button();
+            this.listViewAttack = new System.Windows.Forms.ListView();
             this.columnHeaderId = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnHeaderUrl = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnHeaderAttackType = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnHeaderTime = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.label9 = new System.Windows.Forms.Label();
-            this.labelTotalCannons = new System.Windows.Forms.Label();
             this.panelHeader.SuspendLayout();
             this.panelStatus.SuspendLayout();
             this.panelMain.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.trackBar1)).BeginInit();
             this.SuspendLayout();
             // 
             // panelHeader
@@ -61,7 +66,7 @@
             this.panelHeader.Controls.Add(this.label1);
             this.panelHeader.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.panelHeader.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.panelHeader.Location = new System.Drawing.Point(0, 423);
+            this.panelHeader.Location = new System.Drawing.Point(0, 473);
             this.panelHeader.Name = "panelHeader";
             this.panelHeader.Size = new System.Drawing.Size(1087, 70);
             this.panelHeader.TabIndex = 0;
@@ -107,8 +112,28 @@
             this.panelStatus.Location = new System.Drawing.Point(0, 0);
             this.panelStatus.Margin = new System.Windows.Forms.Padding(10);
             this.panelStatus.Name = "panelStatus";
-            this.panelStatus.Size = new System.Drawing.Size(356, 423);
+            this.panelStatus.Size = new System.Drawing.Size(356, 473);
             this.panelStatus.TabIndex = 1;
+            // 
+            // labelTotalCannons
+            // 
+            this.labelTotalCannons.AutoSize = true;
+            this.labelTotalCannons.Font = new System.Drawing.Font("Roboto Mono", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.labelTotalCannons.ForeColor = System.Drawing.Color.Red;
+            this.labelTotalCannons.Location = new System.Drawing.Point(256, 90);
+            this.labelTotalCannons.Name = "labelTotalCannons";
+            this.labelTotalCannons.Size = new System.Drawing.Size(49, 15);
+            this.labelTotalCannons.TabIndex = 11;
+            this.labelTotalCannons.Text = "Failed";
+            // 
+            // label9
+            // 
+            this.label9.AutoSize = true;
+            this.label9.Location = new System.Drawing.Point(12, 90);
+            this.label9.Name = "label9";
+            this.label9.Size = new System.Drawing.Size(98, 15);
+            this.label9.TabIndex = 10;
+            this.label9.Text = "Total cannons";
             // 
             // labelMacAdress
             // 
@@ -197,78 +222,115 @@
             // panelMain
             // 
             this.panelMain.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(150)))));
-            this.panelMain.Controls.Add(this.listView1);
+            this.panelMain.Controls.Add(this.checkBoxThreads);
+            this.panelMain.Controls.Add(this.label4);
+            this.panelMain.Controls.Add(this.trackBar1);
+            this.panelMain.Controls.Add(this.buttonStartAttack);
+            this.panelMain.Controls.Add(this.listViewAttack);
             this.panelMain.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panelMain.Location = new System.Drawing.Point(356, 0);
             this.panelMain.Name = "panelMain";
-            this.panelMain.Size = new System.Drawing.Size(731, 423);
+            this.panelMain.Size = new System.Drawing.Size(731, 473);
             this.panelMain.TabIndex = 2;
             // 
-            // listView1
+            // checkBoxThreads
             // 
-            this.listView1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(24)))), ((int)(((byte)(160)))));
-            this.listView1.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
+            this.checkBoxThreads.AutoSize = true;
+            this.checkBoxThreads.Checked = true;
+            this.checkBoxThreads.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.checkBoxThreads.Font = new System.Drawing.Font("Roboto Mono", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.checkBoxThreads.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
+            this.checkBoxThreads.Location = new System.Drawing.Point(37, 330);
+            this.checkBoxThreads.Name = "checkBoxThreads";
+            this.checkBoxThreads.Size = new System.Drawing.Size(103, 19);
+            this.checkBoxThreads.TabIndex = 10;
+            this.checkBoxThreads.Text = "Use threads";
+            this.checkBoxThreads.UseVisualStyleBackColor = true;
+            // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Font = new System.Drawing.Font("Roboto Mono", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label4.ForeColor = System.Drawing.SystemColors.Control;
+            this.label4.Location = new System.Drawing.Point(34, 287);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(104, 18);
+            this.label4.TabIndex = 9;
+            this.label4.Text = "Attack force";
+            // 
+            // trackBar1
+            // 
+            this.trackBar1.Location = new System.Drawing.Point(196, 278);
+            this.trackBar1.Minimum = 5;
+            this.trackBar1.Name = "trackBar1";
+            this.trackBar1.Size = new System.Drawing.Size(416, 45);
+            this.trackBar1.TabIndex = 2;
+            this.trackBar1.Value = 5;
+            // 
+            // buttonStartAttack
+            // 
+            this.buttonStartAttack.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(128)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.buttonStartAttack.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
+            this.buttonStartAttack.ForeColor = System.Drawing.SystemColors.ControlText;
+            this.buttonStartAttack.Location = new System.Drawing.Point(248, 338);
+            this.buttonStartAttack.Name = "buttonStartAttack";
+            this.buttonStartAttack.Size = new System.Drawing.Size(167, 54);
+            this.buttonStartAttack.TabIndex = 1;
+            this.buttonStartAttack.Text = "Start Attack";
+            this.buttonStartAttack.UseVisualStyleBackColor = false;
+            this.buttonStartAttack.Click += new System.EventHandler(this.buttonStartAttack_Click);
+            // 
+            // listViewAttack
+            // 
+            this.listViewAttack.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(24)))), ((int)(((byte)(160)))));
+            this.listViewAttack.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
             this.columnHeaderId,
             this.columnHeaderUrl,
             this.columnHeaderAttackType,
             this.columnHeaderTime});
-            this.listView1.FullRowSelect = true;
-            this.listView1.Location = new System.Drawing.Point(13, 12);
-            this.listView1.MultiSelect = false;
-            this.listView1.Name = "listView1";
-            this.listView1.Size = new System.Drawing.Size(706, 251);
-            this.listView1.TabIndex = 0;
-            this.listView1.UseCompatibleStateImageBehavior = false;
-            this.listView1.View = System.Windows.Forms.View.Details;
+            this.listViewAttack.Font = new System.Drawing.Font("Consolas", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.listViewAttack.ForeColor = System.Drawing.Color.Silver;
+            this.listViewAttack.FullRowSelect = true;
+            this.listViewAttack.Location = new System.Drawing.Point(13, 12);
+            this.listViewAttack.MultiSelect = false;
+            this.listViewAttack.Name = "listViewAttack";
+            this.listViewAttack.Size = new System.Drawing.Size(706, 251);
+            this.listViewAttack.Sorting = System.Windows.Forms.SortOrder.Ascending;
+            this.listViewAttack.TabIndex = 0;
+            this.listViewAttack.UseCompatibleStateImageBehavior = false;
+            this.listViewAttack.View = System.Windows.Forms.View.Details;
+            this.listViewAttack.ColumnWidthChanging += new System.Windows.Forms.ColumnWidthChangingEventHandler(this.listViewAttack_ColumnWidthChanging);
+            this.listViewAttack.Resize += new System.EventHandler(this.listViewAttack_Resize);
             // 
             // columnHeaderId
             // 
             this.columnHeaderId.Text = "Id";
-            this.columnHeaderId.Width = 111;
+            this.columnHeaderId.Width = 114;
             // 
             // columnHeaderUrl
             // 
             this.columnHeaderUrl.Text = "Url";
             this.columnHeaderUrl.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.columnHeaderUrl.Width = 216;
             // 
             // columnHeaderAttackType
             // 
             this.columnHeaderAttackType.Text = "Attack Type";
             this.columnHeaderAttackType.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            this.columnHeaderAttackType.Width = 188;
+            this.columnHeaderAttackType.Width = 204;
             // 
             // columnHeaderTime
             // 
-            this.columnHeaderTime.Text = "Time";
+            this.columnHeaderTime.Text = "Time (s)";
             this.columnHeaderTime.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            this.columnHeaderTime.Width = 79;
-            // 
-            // label9
-            // 
-            this.label9.AutoSize = true;
-            this.label9.Location = new System.Drawing.Point(12, 90);
-            this.label9.Name = "label9";
-            this.label9.Size = new System.Drawing.Size(98, 15);
-            this.label9.TabIndex = 10;
-            this.label9.Text = "Total cannons";
-            // 
-            // labelTotalCannons
-            // 
-            this.labelTotalCannons.AutoSize = true;
-            this.labelTotalCannons.Font = new System.Drawing.Font("Roboto Mono", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.labelTotalCannons.ForeColor = System.Drawing.Color.Red;
-            this.labelTotalCannons.Location = new System.Drawing.Point(256, 90);
-            this.labelTotalCannons.Name = "labelTotalCannons";
-            this.labelTotalCannons.Size = new System.Drawing.Size(49, 15);
-            this.labelTotalCannons.TabIndex = 11;
-            this.labelTotalCannons.Text = "Failed";
+            this.columnHeaderTime.Width = 165;
             // 
             // GUI
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            this.ClientSize = new System.Drawing.Size(1087, 493);
+            this.ClientSize = new System.Drawing.Size(1087, 543);
             this.Controls.Add(this.panelMain);
             this.Controls.Add(this.panelStatus);
             this.Controls.Add(this.panelHeader);
@@ -281,6 +343,8 @@
             this.panelStatus.ResumeLayout(false);
             this.panelStatus.PerformLayout();
             this.panelMain.ResumeLayout(false);
+            this.panelMain.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.trackBar1)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -300,12 +364,16 @@
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Panel panelMain;
-        private System.Windows.Forms.ListView listView1;
         private System.Windows.Forms.ColumnHeader columnHeaderId;
         private System.Windows.Forms.ColumnHeader columnHeaderUrl;
         private System.Windows.Forms.ColumnHeader columnHeaderAttackType;
         private System.Windows.Forms.ColumnHeader columnHeaderTime;
         private System.Windows.Forms.Label labelTotalCannons;
         private System.Windows.Forms.Label label9;
+        public System.Windows.Forms.ListView listViewAttack;
+        private System.Windows.Forms.Button buttonStartAttack;
+        private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.TrackBar trackBar1;
+        private System.Windows.Forms.CheckBox checkBoxThreads;
     }
 }

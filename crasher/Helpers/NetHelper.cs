@@ -16,11 +16,15 @@ namespace crasher.Helpers
             return packet;
         }
 
+       //WORK IN PROGRESS
+       /*
        public static void SetTORProxy()
        {
             //SETS PROXY USING TOR NETWORK, REQUIRES TOR STARTED AND CONNECTED
             AttackProxy.hostname = "127.0.0.1";
             AttackProxy.port = 9150;
        }
+       */
+       
     }
 }

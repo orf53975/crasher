@@ -19,10 +19,10 @@ namespace crasher.Attacks
         private static bool ThreadsStarted = false;
         private static int packetSize = 65500;
 
-        public static void Start()
+        public static void Start(Attack attack)
         {
             Console.Clear();
-            Url = new Uri(AttackSettings.Url);
+            Url = new Uri(attack.Url);
 
             Console.WriteLine("Threading mode: " + AttackSettings.Threading);
             if (AttackSettings.Threading)

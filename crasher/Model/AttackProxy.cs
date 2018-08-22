@@ -8,7 +8,7 @@ namespace crasher.Model
 {
     public abstract class AttackProxy
     {
-        public static string hostname { get; set; } = "localhost";
-        public static int port { get; set; } = 80;
+        public static string Hostname { get; set; } = "localhost";
+        public static int Port { get; set; } = 80;
     }
 }

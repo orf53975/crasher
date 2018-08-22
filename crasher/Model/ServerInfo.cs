@@ -8,7 +8,9 @@ namespace crasher.Model
 {
     public class ServerInfo
     {
-        public static string Server_Root { get; private set; } = "http://localhost:8123/mre";
-        public static string Server_Function_Path { get; private set; } = ServerInfo.Server_Root + "/@/function/";
+        //public static string Server_Root { get; private set; } = "http://testingapps.altervista.org";
+
+        public static string Server_Root { get; private set; } = "http://192.168.0.186:8123/mre";
+        public static string Server_Function_Path { get; private set; } = ServerInfo.Server_Root + "/main/function/";
     }
 }
